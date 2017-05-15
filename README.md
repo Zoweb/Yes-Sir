@@ -1,5 +1,6 @@
-_Yes, Sir!_
-===========
+![Logo](https://cdn.rawgit.com/Zoweb/Yes-Sir/e6884de2/logo.png)
+
+
 JavaScript Assertion Library
 ----------------------------
 
@@ -103,7 +104,7 @@ You can also use it like a normal assertion library:
 ## But how do I get it?
 
 It's simple. Just:
-1. Download it off [the website](http://static.zoweb.me/yes-sir/#download) ... No, sir! The website is under construction. Currently you must download it from the ./dist folder.
+1. Download it off [the website](http://static.zoweb.me/yes-sir/#download)
 2. Include it: `<script src="/path/to/yes-sir.js"></script>`
 3. Include a language: `<script src="/path/to/yes-sir.lang.js"></script>`
 4. Set the current language: `yessir.setLanguage(language:ISOLanguage)` (e.g. language could be `EN-gb`)
