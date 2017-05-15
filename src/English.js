@@ -1,10 +1,3 @@
-/*!
- * Copyright (c) 2017, zoweb
- *
- * See the license in the LICENSE file (downloaded with this repository, in the root folder)
- * By using this code, you agree to the license in the file specified (the MIT license)
- */
-
 // JSDocs
 /**
  * @callback RootTruthfulCallback
@@ -27,10 +20,34 @@ class EnglishFN {
  * "English" class
  */
 class English {
-    constructor() {
+    static result() {
+        return {
+            is: {
+                correct: true,
+                incorrect: false
+            }
+        }
+    };
+
+    constructor(truthfuls, innerObject) {
         this._truthfuls = {};
+        if (truthfuls instanceof Object) this._truthfuls = truthfuls;
+
         this._rootTruthful = (value, value2) => value === value2;
-    }
+        this._rootTruthfulName = "equalTo";
+
+        this._innerObject = innerObject;
+
+        this._throwWhen = English.result().is.incorrect;
+    };
+
+    /**
+     * Sets when to throw an error
+     * @param {*} when When to throw the error (
+     */
+     throwWhen(when) {
+         this._throwWhen = when;
+     }
 
     /**
      * Adds a truthful function
@@ -43,19 +60,41 @@ class English {
 
     /**
      * Sets the root truthful function, to be used as xx(value1, value2)
-     * @param {RootTruthfulCallback} fn
+     * @param {String} truthName
      */
-    setRootTruthful(fn) {
-        this._rootTruthful = fn;
+    setRootTruthful(truthName) {
+        if (typeof this._truthfuls[truthName] !== "function") throw new TypeError("Invalid truth name");
+        this._rootTruthful = this._truthfuls[truthName];
+        this._rootTruthfulName = truthName;
     };
 
+    _runFunction(fn, truthName, value, value2, onWrongFn, doInvert) {
+        let hasCompleted = fn(value, value2);
+        if (doInvert === true) {
+            hasCompleted = !hasCompleted;
+        }
 
-    _getTruthfuls(value) {
-        let truth = value2 => this._rootTruthful(value, value2);
+        if (hasCompleted === this._throwWhen) {
+            onWrongFn(
+                exports.yessir.lang(
+                    exports.yessir.langGetComparisonName(truthName),
+                    value, value2,
+                    doInvert ^ this._throwWhen
+                )
+            );
+        }
+
+        return hasCompleted;
+    };
+
+    _getTruthfuls(value, onWrongFn) {
+        let truth = value2 => this._runFunction(this._rootTruthful, null, value, value2, onWrongFn);
 
         for (let currentTruth in this._truthfuls) {
             if (!this._truthfuls.hasOwnProperty(currentTruth)) continue;
-            truth[currentTruth] = this._truthfuls[currentTruth];
+            truth[currentTruth] = value2 => {
+                return this._runFunction(this._truthfuls[currentTruth], currentTruth, value, value2, onWrongFn);
+            };
         }
 
         return truth;
@@ -64,18 +103,35 @@ class English {
     /**
      * Gives an English function
      * @param {*} value The input value
-     * @returns {EnglishFN} The truthful function
+     * @param {Function} [onWrongFn] The on bad stuff function
+     * @returns {EnglishFN|Object} The truthful function (or an object containing it)
      */
-    getFn(value) {
-        let truthfuls = this._getTruthfuls(value);
+    parse(value, onWrongFn = function(){}) {
+        let truthfuls = this._getTruthfuls(value, onWrongFn);
 
         // set up truthfuls.not, by inverting all outputs
-        truthfuls.not = value2 => !this._rootTruthful(value, value2);
+        truthfuls.not = value2 => this._runFunction(this._rootTruthful, null, value, value2, onWrongFn, true);
         for (let currentTruth in truthfuls) {
             if (!truthfuls.hasOwnProperty(currentTruth)) continue;
-            truthfuls.not[currentTruth] = (...args) => truthfuls[currentTruth](...args);
+            truthfuls.not[currentTruth] = (value, value2) => this._runFunction(this._truthfuls[currentTruth], currentTruth, value, value2, onWrongFn, true);
+        }
+
+        if (this._innerObject) {
+            let returnVal = {};
+            returnVal[this._innerObject] = truthfuls;
+            return returnVal;
         }
 
         return truthfuls;
     };
+
+    /**
+     * Quick and simple way to create an export so you don't have to type everything.
+     * Pretty much useless though...
+     * @param {Function} [errorFn] The "on bad stuff" function
+     * @returns {EnglishFN|Object}
+     */
+    generateExport(errorFn = function(){}) {
+        return value => this.parse(value, errorFn);
+    }
 }
