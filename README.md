@@ -128,12 +128,26 @@ It's simple. Just:
 	 - `like(value2:*)`: checks if the `value` is like (`==`) `value2` (`10 == true`, `"" == false`). May cause
 	 unexpected type coercion.
 
+	- `lengthEqualTo(length:Number)`: checks if `value`'s length is equal to `length`
+	- `lengthOver(length:Number)`: checks if `value`'s length is over `length`
+	- `lengthOverOrEqualTo(length:Number)`: checks if `value`'s length is over or equal to `length`
+	- `lengthUnder(length:Number)`: checks if `value`'s length is under `length`
+	- `lengthUnderOrEqualTo(length:Number)`: checks if `value`'s length is under or equal to `length`
+
+	- `over(value2:Number)`: checks if `value` is over `value2`
+	- `overOrEqualTo(value2:Number)`: checks if `value` is over or equal to `value2`
+
+	- `under(value2:Number)`: checks if `value` is under `value2`
+	- `underOrEqualTo(value2:Number)`: checks if `value` is under or equal to `value2`
+
+	- `including(includes:*)`: checks if `value` includes `includes`
+
 	 - `(value2:*)`: This line is confusing. It means `Is(value)(value2)`. Alias for `Is(value).equalTo(value2)`
 
 	 - `not.***`: Includes all functions above, but reverses their output (so `Is(10).not.true()` returns `true`)
 	 - `not(value2:*)`: Alias for `Is(value).not.equalTo(value2)`
 
- - All of the above functions are also returned by `Force(value:*).as.***` and `Hopefully(value:*).is.***`, however
+ - All of the above functions are also returned by `Force(value:*).as.***` and `Hopefully(value:*).is.***` (and their message counterparts), however
  these throw errors and warnings respectively.
 
  - `Assert`:
@@ -166,31 +180,65 @@ It's simple. Just:
 
 ## Language Packs
 Yes-Sir includes the capability for multi-linguistics! To create a language, (after loading `yes-sir.js`), set
-`window.yessir.lang` to an object of languages (where each language's name is e.g. `EN-gb` (an ISO language code) but
-not just `EN`)) and each object includes a string message for each object under `Assert` (`like`, `equal` etc).
+`window.yessir.lang` to an object like the following:
 
 For example,
 
     window.yessir.lang = {
-	    "EN-gb": {
-            like: "%value% must be like %expected%",
+        "EN-gb": { // the language name, by ISO specs
+            // The format to use for parsing the language.
+            format: "%value% %comparison% %expected%",
 
-            equal: "%value% must equal %expected%",
-            notEqual: "%value% must not equal %expected%",
+            // The value used if a comparison should NOT happen
+            not: "not ",
 
-            null: "%value% must be null",
-            notNull: "%value% must not be null",
+            // comparisons, pointed to by `db`
+            comparisons: {
+                shouldBe: "should %not%be",
+                shouldEvaluateTo: "should %not%evaluate to",
 
-            existant: "%value% must exist",
-            notExistant: "%value% must not exist",
+                shouldBeAn: "should %not%be a(n)",
 
-            true: "%value% must be true",
-            false: "%value% must be false",
+                shouldBeOver: "should %not%be over",
+                shouldBeOverOrEqualTo: "should %not%be over or equal to",
 
-            eTrue: "%value% must evaluate to true",
-            eFalse: "%value% must evaluate to false",
+                shouldBeUnder: "should %not%be under",
+                shouldBeUnderOrEqualTo: "should %not%be under or equal to",
 
-            typeOf: "%value% must be a(n) %expected%"
+                shouldInclude: "should %not%include"
+            },
+
+            // database of comparison types (should be an object of every function used, to define how they work
+            db: {
+                true: "shouldBe",
+                false: "shouldBe",
+
+                trueCoerced: "shouldEvaluateTo",
+                falseCoerced: "shouldEvaluateTo",
+
+                null: "shouldBe",
+                undefined: "shouldBe",
+                existant: "shouldBe",
+
+                a: "shouldBeAn",
+
+                equalTo: "shouldBe",
+                like: "shouldEvaluateTo",
+
+                lengthEqualTo: "shouldBe",
+                lengthOver: "shouldBeOver",
+                lengthOverOrEqualTo: "shouldBeOverOrEqualTo",
+                lengthUnder: "shouldBeUnder",
+                lengthUnderOrEqualTo: "shouldBeUnderOrEqualTo",
+
+                over: "shouldBeOver",
+                overOrEqualTo: "shouldBeOverOrEqualTo",
+
+                under: "shouldBeUnder",
+                underOrEqualTo: "shouldBeUnderOrEqualTo",
+
+                including: "shouldInclude"
+            }
         },
         "EN-us": { ... }
     };
