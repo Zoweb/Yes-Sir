@@ -19,9 +19,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 (function (global, factory) {
     if ((typeof module === "undefined" ? "undefined" : _typeof(module)) === "object" && _typeof(module.exports) === "object") {
-        module.exports = global.document ? factory(global, true) : function (w) {
-            return factory(w);
-        };
+        module.exports = factory(module.exports, true);
     } else {
         factory(global);
     }
@@ -35,8 +33,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         Object.defineProperty(exports.yessir, proto, val);
     };
 
+    /*
     // say cheese
-    if (IS_BROWSER) console.log("      %cYes-Sir Assertion Libary\n" + "(c) zoweb 2017 | github/zoweb/yes-sir", "color:purple;font-weight:bold;");else console.log(" __     __              _____ _      \n" + " \\ \\   / /             / ____(_)     \n" + "  \\ \\_/ /__  ___ _____| (___  _ _ __ \n" + "   \\   / _ \\/ __|______\\___ \\| | '__|\n" + "    | |  __/\\__ \\      ____) | | |   \n" + "    |_|\\___||___/     |_____/|_|_|   \n" + "                                     \n" + "                                     \n" + "          assertion library\n");
+    if (IS_BROWSER) console.log("      %cYes-Sir Assertion Libary\n" +
+        "(c) zoweb 2017 | github/zoweb/yes-sir", "color:purple;font-weight:bold;");
+    else console.log(" __     __              _____ _      \n" +
+        " \\ \\   / /             / ____(_)     \n" +
+        "  \\ \\_/ /__  ___ _____| (___  _ _ __ \n" +
+        "   \\   / _ \\/ __|______\\___ \\| | '__|\n" +
+        "    | |  __/\\__ \\      ____) | | |   \n" +
+        "    |_|\\___||___/     |_____/|_|_|   \n" +
+        "                                     \n" +
+        "                                     \n" +
+        "          assertion library\n");
+    */
+
+    /* HEY THERE! I SEE YOU'RE INSPECTING THE SOURCE CODE! */
+    /* DO YOU WANT TO SPREAD THE WORD ABOUT Yes-Sir? IF YOUR */
+    /* ANSWER WAS "Yes, sir!", THEN MAKE SURE YOU UN-COMMENT OUT THE LINES BELOW "say cheese"! */
 
     /**
      * Creates an error with a custom name
@@ -546,8 +560,73 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
     })();;
 
     (function () {
-        var _languages = {};
-        var _currentLanguage = {};
+        var _languages = {
+            "EN-gb": {
+                // The format to use for parsing the language.
+                format: "%value% %comparison% %expected%",
+
+                // The value used if a comparison should NOT happen
+                not: "not ",
+
+                // comparisons, pointed to by `db`
+                comparisons: {
+                    shouldBe: "should %not%be",
+                    shouldEvaluateTo: "should %not%evaluate to",
+
+                    shouldBeAn: "should %not%be a(n)",
+
+                    shouldBeOver: "should %not%be over",
+                    shouldBeOverOrEqualTo: "should %not%be over or equal to",
+
+                    shouldBeUnder: "should %not%be under",
+                    shouldBeUnderOrEqualTo: "should %not%be under or equal to",
+
+                    shouldInclude: "should %not%include"
+                },
+
+                // database of comparison types (should be an object of every function used, to define how they work
+                db: {
+                    true: "shouldBe",
+                    false: "shouldBe",
+
+                    trueCoerced: "shouldEvaluateTo",
+                    falseCoerced: "shouldEvaluateTo",
+
+                    null: "shouldBe",
+                    undefined: "shouldBe",
+                    existant: "shouldBe",
+
+                    a: "shouldBeAn",
+
+                    equalTo: "shouldBe",
+                    like: "shouldEvaluateTo",
+
+                    lengthEqualTo: "shouldBe",
+                    lengthOver: "shouldBeOver",
+                    lengthOverOrEqualTo: "shouldBeOverOrEqualTo",
+                    lengthUnder: "shouldBeUnder",
+                    lengthUnderOrEqualTo: "shouldBeUnderOrEqualTo",
+
+                    over: "shouldBeOver",
+                    overOrEqualTo: "shouldBeOverOrEqualTo",
+
+                    under: "shouldBeUnder",
+                    underOrEqualTo: "shouldBeUnderOrEqualTo",
+
+                    including: "shouldInclude"
+                }
+            }
+        };
+        var _currentLanguage = {
+            // default, empty language
+            format: "%value% %comparison% %expected%",
+
+            not: "not ",
+
+            comparisons: {
+                shouldEvaluateTo: "should %not%evaluate to"
+            }
+        };
 
         function setLanguage(languages) {
             var FormatError = CustomError("FormatError");
@@ -564,9 +643,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
                 if (languageName.length !== 5) throw new FormatError("Invalid language format.");
                 if (languageName.indexOf("-") !== 2) throw new FormatError("Invalid language format");
 
-                if (!(languages[languageName] instanceof Object)) FunctionTools.throw("Language is in the wrong format", languages[languageName], "Object", "%value% must be an %expected%");
+                if (!(languages[languageName] instanceof Object)) FunctionTools.throw("Language is in the wrong format", languages[languageName] + " must be an Object");
 
-                if (!(typeof _languages[languageName] === "undefined" || _languages[languageName] === null)) FunctionTools.throw("Language already exists", _languages[languageName], null, "%value% must not exist");
+                if (!(typeof _languages[languageName] === "undefined" || _languages[languageName] === null)) FunctionTools.throw("Language already exists", _languages[languageName] + " must not exist");
 
                 _languages[languageName] = languages[languageName];
             }
@@ -577,6 +656,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         }
 
         function getLanguage(comparisonName, value, expected, useNot) {
+            if (typeof _currentLanguage.db === "undefined") console.warn("It seems like no language has been set! It is recommended" + " that you always load one before doing any assertions!");
+
             if (typeof _currentLanguage.format !== "string") throw new ReferenceError("No format has been set");
             if (typeof comparisonName !== "string") throw new TypeError("Comparison name must be a string");
 
@@ -618,20 +699,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         defineExportProperty("langGetComparisonName", {
             get: function get() {
                 return function (truthName) {
+                    if (!_currentLanguage.db) return "shouldEvaluateTo";
                     return _currentLanguage.db[truthName] || "shouldEvaluateTo";
                 };
             }
         });
 
         exports.yessir.setLanguage = function (name) {
-            if (typeof name === "undefined" || name === null) FunctionTools.throw("Argument `name`", name, null, "%value% must exist");
+            if (typeof name === "undefined" || name === null) FunctionTools.throw("Argument `name`", name + " must exist");
 
             var FormatError = CustomError("FormatError");
 
             if (name.length !== 5) throw new FormatError("Invalid language format.");
             if (name.indexOf("-") !== 2) throw new FormatError("Invalid language format.");
 
-            if (typeof _languages[name] === "undefined" || _languages[name] === null) FunctionTools.throw("Unknown language name", _languages[name], null, "%value% must exist");
+            if (typeof _languages[name] === "undefined" || _languages[name] === null) FunctionTools.throw("Unknown language name", _languages[name] + " must exist");
 
             _currentLanguage = _languages[name];
         };
@@ -652,7 +734,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
         window.YesSirNoConflict = function () {
             return exports;
         };
-    }
+    } /* else if (typeof module === "object" && typeof module.exports === "object") {
+         exports.loadLanguage = function(location, languageName) {
+             require(location);
+             exports.setLanguage(languageName);
+         };
+      }*/
 
     return exports;
 });
