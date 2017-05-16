@@ -7,9 +7,7 @@
 
 (function (global, factory) {
     if (typeof module === "object" && typeof module.exports === "object") {
-        module.exports = global.document ?
-            factory(global, true) :
-            w => factory(w);
+        module.exports = factory(module.exports, true);
     } else {
         factory(global);
     }
@@ -24,6 +22,7 @@ const defineExportProperty = (proto, val) => {
     Object.defineProperty(exports.yessir, proto, val);
 };
 
+/*
 // say cheese
 if (IS_BROWSER) console.log("      %cYes-Sir Assertion Libary\n" +
     "(c) zoweb 2017 | github/zoweb/yes-sir", "color:purple;font-weight:bold;");
@@ -36,6 +35,11 @@ else console.log(" __     __              _____ _      \n" +
     "                                     \n" +
     "                                     \n" +
     "          assertion library\n");
+*/
+
+/* HEY THERE! I SEE YOU'RE INSPECTING THE SOURCE CODE! */
+/* DO YOU WANT TO SPREAD THE WORD ABOUT Yes-Sir? IF YOUR */
+/* ANSWER WAS "Yes, sir!", THEN MAKE SURE YOU UN-COMMENT OUT THE LINES BELOW "say cheese"! */
 
 
 // %PAGE_CONTENTS%
@@ -56,7 +60,12 @@ if (typeof noGlobal === "undefined") {
     window.YesSirNoConflict = function() {
         return exports;
     };
-}
+}/* else if (typeof module === "object" && typeof module.exports === "object") {
+    exports.loadLanguage = function(location, languageName) {
+        require(location);
+        exports.setLanguage(languageName);
+    };
+}*/
 
 return exports;
 }));
