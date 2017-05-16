@@ -1,0 +1,19 @@
+{
+  "name": "yes-sir",
+  "version": "1.0.0",
+  "description": "JavaScript Assertion Library that calls you \"Sir\"!",
+  "main": "dist/yes-sir.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zoweb/Yes-Sir.git"
+  },
+  "author": "zoweb <npm@zoweb.me> (http://zoweb.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zoweb/Yes-Sir/issues"
+  },
+  "homepage": "https://github.com/Zoweb/Yes-Sir#readme"
+}

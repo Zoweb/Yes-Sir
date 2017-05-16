@@ -1,10 +1,10 @@
 /*!
  * Yes-Sir EN-gb language
  */
-(function() {
-    if (!window.yessir) throw new Error("Yes-Sir needs to be loaded before loading a language pack!");
+(function(yessir) {
+    if (!yessir) throw new Error("Yes-Sir needs to be loaded before loading a language pack!");
 
-    window.yessir.lang = {
+    yessir.lang = {
         "EN-gb": {
             // The format to use for parsing the language.
             format: "%value% %comparison% %expected%",
@@ -61,4 +61,4 @@
             }
         }
     };
-}());
+}(typeof window === "object" ? window.yessir : module.exports));
