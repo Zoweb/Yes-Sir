@@ -4,7 +4,7 @@
   "description": "JavaScript Assertion Library that calls you \"Sir\"!",
   "main": "dist/yes-sir.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "grunt build"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/Zoweb/Yes-Sir/issues"
   },
-  "homepage": "https://github.com/Zoweb/Yes-Sir#readme"
+  "homepage": "https://github.com/Zoweb/Yes-Sir#readme",
+  "devDependencies": {
+    "babel-preset-env": "^1.4.0",
+    "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^3.0.0"
+  }
 }
