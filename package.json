@@ -1,6 +1,6 @@
 {
   "name": "yes-sir",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript Assertion Library that calls you \"Sir\"!",
   "main": "dist/yes-sir.js",
   "scripts": {
