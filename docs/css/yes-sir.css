@@ -1,0 +1,105 @@
+* {
+    font-family: motor, monospace;
+}
+
+h2 {
+    font-family: mono45-headline, monospace;
+    font-weight: 400;
+}
+h3 {
+    font-family: motor-stencil, monospace;
+    font-weight: 400;
+}
+
+p, ul, ol {
+    line-height: 1.7em;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    border-bottom: 1px solid black;
+}
+
+code {
+    background: black;
+    color: white;
+
+    box-shadow: 0 0 0 1px white, 0 0 0 2px black;
+
+    padding: 1px;
+}
+pre {
+    background: black;
+    color: white;
+
+    padding: 5px;
+}
+pre code {
+    box-shadow: none;
+}
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+#title {
+    height: 30vw;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    background: black;
+}
+
+#title-image {
+    width: 30vw;
+    float: left;
+}
+#title-image img {
+    width: 30vw;
+    height: 30vw;
+}
+
+#title-text {
+    float: right;
+    color: white;
+}
+
+#title-text h1 {
+    font-family: mono45-headline, monospace;
+    font-size: calc(60vw / 6);
+
+    margin: 5vw 5vw 0;
+}
+
+#title-text h2 {
+    font-family: motor-stencil, monospace;
+    font-size: calc(30.6vw / 6);
+    font-weight: 400;
+
+    margin: 0 5vw 5vw;
+}
+
+
+#height-padding {
+    margin-top: 30vw;
+}
+
+#page-left {
+    width: calc(60vw - 21px);
+    border-right: 2px solid black;
+    padding: 10px;
+}
+#page-right {
+    position: fixed;
+    top: 30vw;
+    right: 0;
+
+    width: calc(40vw - 41px);
+    padding: 10px;
+}

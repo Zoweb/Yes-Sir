@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yes-Sir</title>
+
+    <link href="css/yes-sir.css" rel="stylesheet" />
+    <link href="css/greyscale.highlight-theme.css" rel="stylesheet" />
+</head>
+<!--
+Copyright (c) 2017, zachy
+
+See the license in the LICENSE file (downloaded with this repository, in the root folder)
+By using this code, you agree to the license in the file specified (the MIT license)
+-->
+<body>
+<header id="title">
+    <section id="black-bg"></section>
+    <section id="title-image">
+        <img src="https://cdn.rawgit.com/Zoweb/Yes-Sir/e6884de2/logo.png" alt="Yes-Sir Assertion Library" width="600" height="600" />
+    </section>
+    <section id="title-text">
+        <h1>Yes, Sir!</h1>
+        <h2>ASSERTION LIBRARY</h2>
+    </section>
+</header>
+
+<main id="content">
+    <section id="height-padding"></section>
+
+    <section id="page-left">
+        <h2>Yes-Sir Assertion Library</h2>
+        <p>Have you ever wanted a nice and simple assertion library?<br>
+            <em>Yes, sir!</em><br>
+            Do you want it to be easy to understand and use?<br>
+            <em>Yes, sir!</em><br>
+            Do you want it to be multi-lingual?<br>
+            <em>Um, I guess, sir!</em><br>
+            Well, that's good enough for me. Let's get into the intro.<br></p>
+        <h2>Yes-Sir is an assertion library.</h2>
+        <p>But, not your usual assertion library. Unless you want it to be.<br>
+            It's also got an simple and intuitive "is" system to make all the inevitable <code>if</code> statements in your code easier to read
+            and write.<br>
+            Using its assertion system, you can check that an argument exists (or not) or if it is a <code>String</code>, for example. And, if
+            it isn't, Yes-Sir will automatically throw an error. <em>"No, sir"</em></p>
+        <p>All functions in Yes-Sir return true if they completed successfully and false if not.</p>
+        <h3>Lets check out that "is" system:</h3>
+        <p>It uses an English-like structure, mixed with a JavaScript-y style. To start a "sentence", just type <code>Is([value])</code>. You
+            can then do your checks, and see if they are correct:</p>
+        <pre><code>// is xx a
+Is(10).a(Object) // returns false
+Is({}).a(Object) // returns true
+Is("").a("string") // returns true
+Is("").a(Array) // returns false
+
+// is xx true
+Is("10").true() // returns false
+Is(true).true() // returns true
+
+// is xx not xx
+Is(10).not.a(Object) // returns true
+Is("").not.a("string") // returns false
+</code></pre>
+        <p>However, this will not do anything except for return <code>true</code> or <code>false</code>. If you want the function to automatically log
+            any errors to the console, you can use <code>Log(message).if(value).xxx</code>:</p>
+        <pre><code>// log "oh no" if xx is a
+Log("oh no").if(10).is.a(Object) // returns false
+Log("oh no").if({}).is.a(Object) // returns true; logs "oh no"
+Log("oh no").if("").is.a("string") // returns true; logs "oh no"
+Log("oh no").if("").is.a(Array) // returns false
+
+// log "its true" if xx is true
+Log("its true").if("10").is.true() // returns false
+Log("its true").if(true).is.true() // returns true; logs "its true
+
+// log "it isnt" if xx is not xx
+Log("it isnt").if(10).is.not.a(Object) // returns true; logs "it isnt"
+Log("it isnt").if("").is.not.a("string") // returns false
+</code></pre>
+        <p>This system (and its "parser") I have named "English". (Yes. Very original.)</p>
+        <h3>And also the assertion system</h3>
+        <p>There are two ways that the assertion system can be used. Like above, and like normal.</p>
+        <p>To use it like above, use <code>Force</code>:</p>
+        <pre><code>Force(10).as.true() // AssertError: 10 must be true
+   // [with EN-gb set as the current language]
+
+Force(true).as.true() // nothing
+
+Force(true).as.false() // AssertError: 10 must be false
+   // [with EN-gb set as the current language]
+
+Force(true).as.not.false() // nothing
+
+Force(true).as.a("string"); // AssertError: true must be a(n) string
+   // [with EN-gb set as the current language]
+</code></pre>
+        <p>or <code>Throw</code> (like <code>Log</code>) if you want to throw an error with a custom message</p>
+        <pre><code>Throw("oh no").if(true).is.true() // AssertError: oh no: true must not be true
+   // [with EN-gb set as the current language]
+</code></pre>
+        <p>Or you can just warn to the console (not throw an error)</p>
+        <pre><code>Hopefully(true).is.false() // [warn] AssertWarn: true should be false
+   // [with EN-gb set as the current language]
+
+Warn("just a warning").if(true).is.true() // [warn] AssertWarn: just a warning: true should not be true
+</code></pre>
+        <p>You can also use it like a normal assertion library:</p>
+        <pre><code>Assert.true(10, "oh no"); // AssertError: oh no: 10 must be true
+   // [with EN-gb set as the current language]
+   // Much shorter than English, but harder to understand
+
+Assert.true(10); // AssertError: 10 must be true
+   // [with EN-gb set as the current language]
+   // Removing the second argument just removes the message
+</code></pre>
+        <p><code>Hopefully</code> cannot be used in this form, however.</p>
+        <h2>But how do I get it?</h2>
+        <p>Huh, I'm suprised you asked! Check out the sidebar to the right for links!</p>
+        <h2>Everything included</h2>
+        <ul>
+            <li>
+                <p><code>Is(value:*)</code>:</p>
+                <ul>
+                    <li>
+                        <p><code>true()</code>: checks if the value is exactly equal to true</p>
+                    </li>
+                    <li>
+                        <p><code>false()</code>: checks if the value is exactly equal to false</p>
+                    </li>
+                    <li>
+                        <p><code>trueCoerced()</code>: checks if the value is "like" true (so 10 == true, 0 doesn't)</p>
+                    </li>
+                    <li>
+                        <p><code>falseCoerced()</code>: checks if the value is "like" false (so "" == false, "foo" doesn't)</p>
+                    </li>
+                    <li>
+                        <p><code>null()</code>: checks if the value is null</p>
+                    </li>
+                    <li>
+                        <p><code>undefined()</code>: checks if the value is undefined (using <code>typeof</code>, not <code>===</code>)</p>
+                    </li>
+                    <li>
+                        <p><code>a(type:String)</code>: checks if the <code>typeof [value]</code> is <code>type</code></p>
+                    </li>
+                    <li>
+                        <p><code>a(type:Constructor)</code>: checks if the <code>value</code> is an <code>instanceof [type]</code></p>
+                    </li>
+                    <li>
+                        <p><code>equalTo(value2:*)</code>: checks if the <code>value</code> is exactly equal to <code>value2</code></p>
+                    </li>
+                    <li>
+                        <p><code>like(value2:*)</code>: checks if the <code>value</code> is like (<code>==</code>) <code>value2</code> (<code>10 == true</code>, <code>"" == false</code>). May cause
+                            unexpected type coercion.</p>
+                    </li>
+                    <li>
+                        <p><code>lengthEqualTo(length:Number)</code>: checks if <code>value</code>'s length is equal to <code>length</code></p>
+                    </li>
+                    <li>
+                        <p><code>lengthOver(length:Number)</code>: checks if <code>value</code>'s length is over <code>length</code></p>
+                    </li>
+                    <li>
+                        <p><code>lengthOverOrEqualTo(length:Number)</code>: checks if <code>value</code>'s length is over or equal to <code>length</code></p>
+                    </li>
+                    <li>
+                        <p><code>lengthUnder(length:Number)</code>: checks if <code>value</code>'s length is under <code>length</code></p>
+                    </li>
+                    <li>
+                        <p><code>lengthUnderOrEqualTo(length:Number)</code>: checks if <code>value</code>'s length is under or equal to <code>length</code></p>
+                    </li>
+                    <li>
+                        <p><code>over(value2:Number)</code>: checks if <code>value</code> is over <code>value2</code></p>
+                    </li>
+                    <li>
+                        <p><code>overOrEqualTo(value2:Number)</code>: checks if <code>value</code> is over or equal to <code>value2</code></p>
+                    </li>
+                    <li>
+                        <p><code>under(value2:Number)</code>: checks if <code>value</code> is under <code>value2</code></p>
+                    </li>
+                    <li>
+                        <p><code>underOrEqualTo(value2:Number)</code>: checks if <code>value</code> is under or equal to <code>value2</code></p>
+                    </li>
+                    <li>
+                        <p><code>including(includes:*)</code>: checks if <code>value</code> includes <code>includes</code></p>
+                    </li>
+                    <li>
+                        <p><code>(value2:*)</code>: This line is confusing. It means <code>Is(value)(value2)</code>. Alias for <code>Is(value).equalTo(value2)</code></p>
+                    </li>
+                    <li>
+                        <p><code>not.***</code>: Includes all functions above, but reverses their output (so <code>Is(10).not.true()</code> returns <code>true</code>)</p>
+                    </li>
+                    <li>
+                        <p><code>not(value2:*)</code>: Alias for <code>Is(value).not.equalTo(value2)</code></p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>All of the above functions are also returned by <code>Force(value:*).as.***</code> and <code>Hopefully(value:*).is.***</code> (and their message counterparts), however
+                    these throw errors and warnings respectively.</p>
+            </li>
+            <li>
+                <p><code>Assert</code>:</p>
+                <ul>
+                    <li>
+                        <p><code>like(value:*, expected:*, message:String)</code>: checks if the <code>value</code> is like (<code>==</code>) <code>value2</code> (<code>10 == true</code>,
+                            <code>"" == false</code>) and throws <code>message</code> if not. May cause unexpected type coercion.</p>
+                    </li>
+                    <li>
+                        <p><code>equal(value:*, expected:*, message:String)</code>: checks if <code>value</code> is exactly equal to <code>value2</code> and throws <code>message</code>
+                            if not.</p>
+                    </li>
+                    <li>
+                        <p><code>notEqual(value:*, notExpected:*, message:String)</code>: checks if <code>value</code> is not exactly equal to <code>value2</code>. Throws
+                            <code>message</code> if this condition is not met.</p>
+                    </li>
+                    <li>
+                        <p><code>null(value:*, message:String)</code>: checks if <code>value</code> is <code>null</code> and throws <code>message</code> if not.</p>
+                    </li>
+                    <li>
+                        <p><code>notNull(value:*, message:String)</code>: checks if <code>value</code> is not <code>null</code>. Throws <code>message</code> if this condition is not met.</p>
+                    </li>
+                    <li>
+                        <p><code>existant(value:*, message:String)</code>: checks if <code>value</code> is not null and not undefined. Throws <code>message</code> if this
+                            condition is not met.</p>
+                    </li>
+                    <li>
+                        <p><code>notExistant(value:*, message:String)</code>: checks if <code>value</code> is null or undefined and throws <code>message</code> if not.</p>
+                    </li>
+                    <li>
+                        <p><code>true(value:*, message:String)</code>: checks if <code>value</code> is true and throws <code>message</code> if not.</p>
+                    </li>
+                    <li>
+                        <p><code>false(value:*, message:String)</code>: checks if <code>value</code> is false and throws <code>message</code> if not.</p>
+                    </li>
+                    <li>
+                        <p><code>eTrue(value:*, message:String)</code>: checks if <code>value</code> evaluates to true (<code>10 == true</code>, <code>0</code> doesn't) and throws
+                            <code>message</code> if not</p>
+                    </li>
+                    <li>
+                        <p><code>eFalse(value:*, message:String)</code>: checks if <code>value</code> evaluates to false (<code>"" == false"</code>, <code>"foo"</code> doesn't) and
+                            throws <code>message</code> if not</p>
+                    </li>
+                    <li>
+                        <p><code>typeOf(value:*, type:String, message:String)</code>: checks if <code>typeof [value]</code> is <code>type</code> and if not, throws <code>message</code></p>
+                    </li>
+                    <li>
+                        <p><code>typeOf(value:*, type:Constructor, message:String)</code>: checks if <code>value</code> is an <code>instanceof [type]</code> and if not,
+                            throws <code>message</code></p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>Language Packs</h2>
+        <p>Yes-Sir includes the capability for multi-linguistics! To create a language, (after loading <code>yes-sir.js</code>), set
+            <code>window.yessir.lang</code> to an object like the following:</p>
+        <p>For example,</p>
+        <pre><code>window.yessir.lang = {
+    "EN-gb": { // the language name, by ISO specs
+        // The format to use for parsing the language.
+        format: "%value% %comparison% %expected%",
+
+        // The value used if a comparison should NOT happen
+        not: "not ",
+
+        // comparisons, pointed to by `db`
+        comparisons: {
+            shouldBe: "should %not%be",
+            shouldEvaluateTo: "should %not%evaluate to",
+
+            shouldBeAn: "should %not%be a(n)",
+
+            shouldBeOver: "should %not%be over",
+            shouldBeOverOrEqualTo: "should %not%be over or equal to",
+
+            shouldBeUnder: "should %not%be under",
+            shouldBeUnderOrEqualTo: "should %not%be under or equal to",
+
+            shouldInclude: "should %not%include"
+        },
+
+        // database of comparison types (should be an object of every function used, to define how they work)
+        db: {
+            true: "shouldBe",
+            false: "shouldBe",
+
+            trueCoerced: "shouldEvaluateTo",
+            falseCoerced: "shouldEvaluateTo",
+
+            null: "shouldBe",
+            undefined: "shouldBe",
+            existant: "shouldBe",
+
+            a: "shouldBeAn",
+
+            equalTo: "shouldBe",
+            like: "shouldEvaluateTo",
+
+            lengthEqualTo: "shouldBe",
+            lengthOver: "shouldBeOver",
+            lengthOverOrEqualTo: "shouldBeOverOrEqualTo",
+            lengthUnder: "shouldBeUnder",
+            lengthUnderOrEqualTo: "shouldBeUnderOrEqualTo",
+
+            over: "shouldBeOver",
+            overOrEqualTo: "shouldBeOverOrEqualTo",
+
+            under: "shouldBeUnder",
+            underOrEqualTo: "shouldBeUnderOrEqualTo",
+
+            including: "shouldInclude"
+        }
+    },
+    "EN-us": { ... }
+};
+</code></pre>
+        <p>(which is the quick <code>EN-gb</code> language that I made)</p>
+        <p><em>See above for how to include a language</em></p>
+    </section>
+    <section id="page-right">
+        <h2>Download Yes-Sir</h2>
+
+        <h3><a href="https://rawgit.com/Zoweb/Yes-Sir/master/dist/yes-sir.min.js">Click here to download the latest version</a> (opens in a new tab)</h3>
+
+        <h2>Including it in your code:</h2>
+        <pre><code>&lt;!-- If you want to host it on your website -->
+&lt;script src="/path/to/yes-sir.min.js">&lt;/script>
+
+&lt;!-- If you want it hosted on a fast CDN (StackPath) -->
+&lt;script src="https://cdn.rawgit.com/Zoweb/Yes-Sir/7196cbb9/dist/yes-sir.min.js">&lt;/script>
+
+&lt;!-- Then... &lt;-->
+&lt;script>... Is(arg).not.undefined() ...&lt;/script></code></pre>
+    </section>
+</main>
+
+<script src="js/highlight.pack.js"></script>
+<script src="js/page.js"></script>
+<script src="https://use.typekit.net/jwi1hqe.js"></script>
+<script>try{Typekit.load({ async: true });}catch(e){}</script>
+</body>
+</html>
